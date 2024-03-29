@@ -10,6 +10,16 @@ public class Produto {
     private String tipo_produto;
     private String url_img;
 
+    public Produto(int idProduto, String nomeProduto, String descricao, float preco, int quantidadeEstoque, String tipoProduto, String urlImagem) {
+        this.id_produto = idProduto;
+        this.nome_produto = nomeProduto;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.quantidade = quantidadeEstoque;
+        this.tipo_produto = tipoProduto;
+        this.url_img = urlImagem;
+    }
+
     public int getId_produto() {
         return id_produto;
     }
