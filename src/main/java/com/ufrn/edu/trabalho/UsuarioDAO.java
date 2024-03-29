@@ -15,7 +15,7 @@ public class UsuarioDAO {
     }
 
     public void inserirUsuario(Usuario usuario) throws SQLException {
-        String sql = "INSERT INTO Usuarios (nome, sobrenome, email, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Usuarios (nome, sobrenome, email, senha_hash, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setString(1, usuario.getNome());
             pstmt.setString(2, usuario.getSobrenome());
@@ -32,7 +32,7 @@ public class UsuarioDAO {
         try (PreparedStatement pstmt = conexao.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 usuarios.add(new Usuario(rs.getInt("id_usuario"), rs.getString("nome"), rs.getString("sobrenome"),
-                        rs.getString("email"), rs.getString("senha")));
+                        rs.getString("email"), rs.getString("senha_hash")));
             }
         }
         return usuarios;
