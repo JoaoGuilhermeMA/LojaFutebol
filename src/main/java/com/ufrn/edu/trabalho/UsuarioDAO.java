@@ -26,20 +26,6 @@ public class UsuarioDAO {
         }
     }
 
-    public Usuario buscarUsuarioPorEmail(String email) throws SQLException {
-        String sql = "SELECT * FROM Usuarios WHERE email = ?";
-        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
-            pstmt.setString(1, email);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new Usuario(rs.getInt("id_usuario"), rs.getString("nome"), rs.getString("sobrenome"),
-                            rs.getString("email"), rs.getString("senha"), rs.getString("tipo_usuario"));
-                }
-            }
-        }
-        return null;
-    }
-
     public List<Usuario> listarTodosUsuarios() throws SQLException {
         List<Usuario> usuarios = new ArrayList<>();
         String sql = "SELECT * FROM Usuarios";
