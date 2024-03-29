@@ -9,13 +9,13 @@ public class Usuario {
     private String tipoUsuario;
 
     // Construtor
-    public Usuario(int idUsuario, String nome, String sobrenome, String email, String senha, String tipoUsuario) {
+    public Usuario(int idUsuario, String nome, String sobrenome, String email, String senha) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
         this.senha = senha;
-        this.tipoUsuario = tipoUsuario;
+        this.tipoUsuario = "cliente";
     }
 
     public int getIdUsuario() {
@@ -60,9 +60,5 @@ public class Usuario {
 
     public String getTipoUsuario() {
         return tipoUsuario;
-    }
-
-    public void setTipoUsuario(String tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
     }
 }

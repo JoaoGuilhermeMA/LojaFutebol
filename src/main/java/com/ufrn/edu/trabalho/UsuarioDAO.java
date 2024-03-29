@@ -32,7 +32,7 @@ public class UsuarioDAO {
         try (PreparedStatement pstmt = conexao.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 usuarios.add(new Usuario(rs.getInt("id_usuario"), rs.getString("nome"), rs.getString("sobrenome"),
-                        rs.getString("email"), rs.getString("senha"), rs.getString("tipo_usuario")));
+                        rs.getString("email"), rs.getString("senha")));
             }
         }
         return usuarios;
