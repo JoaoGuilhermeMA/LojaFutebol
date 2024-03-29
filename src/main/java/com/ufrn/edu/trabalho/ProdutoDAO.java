@@ -44,7 +44,7 @@ public class ProdutoDAO {
 
     public List<Produto> listarProdutos() throws SQLException {
         List<Produto> produtos = new ArrayList<>();
-        String sql = "SELECT * FROM Produto";
+        String sql = "SELECT * FROM Produtos";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 produtos.add(new Produto(rs.getInt("id_produto"), rs.getString("nome_produto"), rs.getString("descricao"),
@@ -55,7 +55,7 @@ public class ProdutoDAO {
     }
 
     public void excluirProduto(int idProduto) throws SQLException{
-        String sql = "DELETE FROM itens_pedido WHERE id_produto = ?";
+        String sql = "DELETE FROM Produtos WHERE id_produto = ?";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setInt(1, idProduto);
             pstmt.executeUpdate();
