@@ -1,0 +1,55 @@
+package com.ufrn.edu.trabalho;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProdutoDAO {
+
+    private Connection conexao;
+
+    public ProdutoDAO(Connection conexao) {
+        this.conexao = conexao;
+    }
+
+    public void inserirProduto(Usuario usuario) throws SQLException {
+        String sql = "INSERT INTO Produtos (nome_produtos, descricao, email, senha, tipo_usuario) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setString(1, usuario.getNome());
+            pstmt.setString(2, usuario.getSobrenome());
+            pstmt.setString(3, usuario.getEmail());
+            pstmt.setString(4, usuario.getSenha());
+            pstmt.setString(5, usuario.getTipoUsuario());
+            pstmt.executeUpdate();
+        }
+    }
+
+    public Usuario buscarUsuarioPorEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM Usuarios WHERE email = ?";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Usuario(rs.getInt("id_usuario"), rs.getString("nome"), rs.getString("sobrenome"),
+                            rs.getString("email"), rs.getString("senha"), rs.getString("tipo_usuario"));
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Usuario> listarTodosUsuarios() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM Usuarios";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                usuarios.add(new Usuario(rs.getInt("id_usuario"), rs.getString("nome"), rs.getString("sobrenome"),
+                        rs.getString("email"), rs.getString("senha"), rs.getString("tipo_usuario")));
+            }
+        }
+        return usuarios;
+    }
+}
