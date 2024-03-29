@@ -1,4 +1,4 @@
-package com.ufrn.edu.trabalho.model;
+package com.ufrn.edu.trabalho;
 
 import java.net.URISyntaxException;
 import java.sql.Connection;
