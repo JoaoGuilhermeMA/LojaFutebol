@@ -6,6 +6,7 @@ public class ItemPedido {
         private int idProduto;
         private int quantidade;
         private double precoUnitario;
+        private double precoTotal;
 
     public int getIdItemPedido() {
         return idItemPedido;
@@ -45,5 +46,13 @@ public class ItemPedido {
 
     public void setPrecoUnitario(double precoUnitario) {
         this.precoUnitario = precoUnitario;
+    }
+
+    public double getPrecoTotal() {
+        return precoTotal;
+    }
+
+    public void setPrecoTotal(double precoTotal) {
+        this.precoTotal = precoTotal;
     }
 }

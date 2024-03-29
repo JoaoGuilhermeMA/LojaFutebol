@@ -15,12 +15,13 @@ public class ItemPedidoDAO {
     }
 
     public void inserirItemPedido(ItemPedido itemPedido) throws SQLException {
-        String sql = "INSERT INTO itens_pedido (id_pedido, id_produto, quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO itens_pedido (id_pedido, id_produto, quantidade, preco_unitario, preco_total) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setInt(1, itemPedido.getIdPedido());
             pstmt.setInt(2, itemPedido.getIdProduto());
             pstmt.setInt(3, itemPedido.getQuantidade());
             pstmt.setDouble(4, itemPedido.getPrecoUnitario());
+            pstmt.setDouble(5, itemPedido.getPrecoTotal());
             pstmt.executeUpdate();
         }
     }
@@ -33,11 +34,12 @@ public class ItemPedidoDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     ItemPedido itemPedido = new ItemPedido();
-                    itemPedido.setIdItemPedido(rs.getInt("id_item_pedido"));
+                    itemPedido.setIdItemPedido(rs.getInt("id_item"));
                     itemPedido.setIdPedido(rs.getInt("id_pedido"));
                     itemPedido.setIdProduto(rs.getInt("id_produto"));
                     itemPedido.setQuantidade(rs.getInt("quantidade"));
                     itemPedido.setPrecoUnitario(rs.getDouble("preco_unitario"));
+                    itemPedido.setPrecoTotal(rs.getDouble("preco_total"));
                     itensPedido.add(itemPedido);
                 }
             }
@@ -46,7 +48,7 @@ public class ItemPedidoDAO {
     }
 
     public void excluirItemPedido(int idItemPedido) throws SQLException {
-        String sql = "DELETE FROM itens_pedido WHERE id_item_pedido = ?";
+        String sql = "DELETE FROM itens_pedido WHERE id_item = ?";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setInt(1, idItemPedido);
             pstmt.executeUpdate();
