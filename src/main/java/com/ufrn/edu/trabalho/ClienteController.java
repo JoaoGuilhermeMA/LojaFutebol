@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ClienteController {
 
+    @RequestMapping(value = "/registrar", method = RequestMethod.GET)
+    public String exibirFormularioRegistro() {
+        return "cadastroUsuario.html";
+    }
+
     @RequestMapping(value = "/registrar", method = RequestMethod.POST)
     public void cadastrarCliente(HttpServletRequest request, HttpServletResponse response){
 
