@@ -16,7 +16,7 @@ public class ProdutoDAO {
     }
 
     public void inserirProduto(Produto produto) throws SQLException {
-        String sql = "INSERT INTO Produtos (nome_produtos, descricao, preco, quantidade_estoque, tipo_produto, url_imagem) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Produtos (nome_produtos, descricao, preco, quantidade_estoque, tipo_produto, url_imagem) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setString(1, produto.getNome_produto());
             pstmt.setString(2, produto.getDescricao());
@@ -42,15 +42,23 @@ public class ProdutoDAO {
         return null;
     }
 
-    public List<Usuario> listarTodosUsuarios() throws SQLException {
-        List<Usuario> usuarios = new ArrayList<>();
-        String sql = "SELECT * FROM Usuarios";
+    public List<Produto> listarProdutos() throws SQLException {
+        List<Produto> produtos = new ArrayList<>();
+        String sql = "SELECT * FROM Produto";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                usuarios.add(new Usuario(rs.getInt("id_usuario"), rs.getString("nome"), rs.getString("sobrenome"),
-                        rs.getString("email"), rs.getString("senha"), rs.getString("tipo_usuario")));
+                produtos.add(new Produto(rs.getInt("id_produto"), rs.getString("nome_produto"), rs.getString("descricao"),
+                        rs.getFloat("preco"), rs.getInt("quantidade_estoque"), rs.getString("tipo_produto"), rs.getString("url_imagem")));
             }
         }
-        return usuarios;
+        return produtos;
+    }
+
+    public void excluirProduto(int idProduto) throws SQLException{
+        String sql = "DELETE FROM itens_pedido WHERE id_produto = ?";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setInt(1, idProduto);
+            pstmt.executeUpdate();
+        }
     }
 }
