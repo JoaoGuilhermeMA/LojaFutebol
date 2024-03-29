@@ -9,8 +9,7 @@ public class Usuario {
     private String tipoUsuario;
 
     // Construtor
-    public Usuario(int idUsuario, String nome, String sobrenome, String email, String senha) {
-        this.idUsuario = idUsuario;
+    public Usuario(String nome, String sobrenome, String email, String senha) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
