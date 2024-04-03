@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LOJA FLAMENGO</title>
+</head>
+<body>
+    <form action="/pageCadastro" method="post">
+        <h2>Cadastrar PRODUTO</h2> <br>
+        <label>Nome: </label><input type="text" name="nome" placeholder="Nome do produto"> <br>
+        <label>Descrição: </label><textarea name="descricao" placeholder="Descrição do produto"></textarea><br>
+        <label>Tipo do produto: </label><input type="text" name="tipo" placeholder="Tipo do produto"><br>
+        <label>Quantidade em estoque: </label><input type="number" min="1" name="quantidade" placeholder="Quantidade"><br>
+        <label>Preço: </label><input type="number" name="preco" step="0.01" min="0" placeholder="Preço"><br>
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+<footer><a href="/pageLoja"><button>Voltar</button></a></footer>
+</html>

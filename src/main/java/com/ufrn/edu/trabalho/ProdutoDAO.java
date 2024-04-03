@@ -16,26 +16,27 @@ public class ProdutoDAO {
     }
 
     public void inserirProduto(Produto produto) throws SQLException {
-        String sql = "INSERT INTO Produtos (nome_produtos, descricao, preco, quantidade_estoque, tipo_produto, url_imagem) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Produtos (nome_produto, descricao, preco, quantidade_estoque, tipo_produto) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setString(1, produto.getNome_produto());
             pstmt.setString(2, produto.getDescricao());
             pstmt.setFloat(3, produto.getPreco());
             pstmt.setInt(4, produto.getQuantidade());
             pstmt.setString(5, produto.getTipo_produto());
-            pstmt.setString(6, produto.getUrl_img());
             pstmt.executeUpdate();
         }
     }
 
-    public Produto buscarProduto(String tipo) throws SQLException {
+    public Produto buscarProdutoTipo(String tipo) throws SQLException {
         String sql = "SELECT * FROM Produtos WHERE tipo_produto = ?";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
             pstmt.setString(1, tipo);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Produto(rs.getInt("id_produto"), rs.getString("nome_produto"), rs.getString("descricao"),
-                            rs.getFloat("preco"), rs.getInt("quantidade_estoque"), rs.getString("tipo_produto"), rs.getString("url_imagem"));
+                    Produto produto = new Produto( rs.getString("nome_produto"), rs.getString("descricao"),
+                            rs.getFloat("preco"), rs.getInt("quantidade_estoque"), rs.getString("tipo_produto"));
+                    produto.setId_produto(rs.getInt("id_produto"));
+                    return produto;
                 }
             }
         }
@@ -47,8 +48,10 @@ public class ProdutoDAO {
         String sql = "SELECT * FROM Produtos";
         try (PreparedStatement pstmt = conexao.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
-                produtos.add(new Produto(rs.getInt("id_produto"), rs.getString("nome_produto"), rs.getString("descricao"),
-                        rs.getFloat("preco"), rs.getInt("quantidade_estoque"), rs.getString("tipo_produto"), rs.getString("url_imagem")));
+                Produto produto = new Produto( rs.getString("nome_produto"), rs.getString("descricao"),
+                        rs.getFloat("preco"), rs.getInt("quantidade_estoque"), rs.getString("tipo_produto"));
+                produto.setId_produto(rs.getInt("id_produto"));
+                produtos.add(produto);
             }
         }
         return produtos;

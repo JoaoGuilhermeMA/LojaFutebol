@@ -10,18 +10,19 @@ public class Produto {
     private String tipo_produto;
     private String url_img;
 
-    public Produto(int idProduto, String nomeProduto, String descricao, float preco, int quantidadeEstoque, String tipoProduto, String urlImagem) {
-        this.id_produto = idProduto;
+    public Produto(String nomeProduto, String descricao, float preco, int quantidadeEstoque, String tipoProduto) {
         this.nome_produto = nomeProduto;
         this.descricao = descricao;
         this.preco = preco;
         this.quantidade = quantidadeEstoque;
         this.tipo_produto = tipoProduto;
-        this.url_img = urlImagem;
     }
 
     public int getId_produto() {
         return id_produto;
+    }
+    public void setId_produto(int id_produto){
+        this.id_produto = id_produto;
     }
 
     public String getNome_produto() {

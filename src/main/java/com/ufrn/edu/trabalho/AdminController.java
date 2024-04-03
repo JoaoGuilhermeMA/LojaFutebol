@@ -36,13 +36,30 @@ public class AdminController {
             htmlWriter.write("<ul>");
             for (Produto produto : produtos) {
                 htmlWriter.write("<li>" + produto.getUrl_img() +"<br>"+ produto.getNome_produto()+"<br>" + produto.getTipo_produto()+"<br>" + produto.getPreco()+"<br>" + produto.getDescricao()+"<br>");
-                htmlWriter.write("<a href='doExcluir?id=" + produto.getId_produto() + "'>Excluir</a>");
+                htmlWriter.write("<a href='/doExcluir?id=" + produto.getId_produto() + "'><button>Excluir</button></a>");
                 htmlWriter.write("</li>");
             }
             htmlWriter.write("</ul>");
         }
 
+        htmlWriter.write("<a href='/pageCadastro.html'><button>Novo produto</button></a>");
         htmlReader.close();
         htmlWriter.close();
+    }
+
+    @RequestMapping(value = "/pageCadastro", method = RequestMethod.POST)
+    public void cadastrarProd(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException {
+        String nomeprod = request.getParameter("nome");
+        String descricaoprod = request.getParameter("descricao");
+        String tipoprod = request.getParameter("tipo");
+        String quantidade = request.getParameter("quantidade");
+        String preco = request.getParameter("preco");
+
+        Produto produto = new Produto(nomeprod, descricaoprod, Float.parseFloat(preco), Integer.parseInt(quantidade), tipoprod);
+        Conexao conexao = new Conexao();
+        var dao = new ProdutoDAO(conexao.getConexao());
+        dao.inserirProduto(produto);
+
+        response.sendRedirect("pageCadastro.html");
     }
 }
