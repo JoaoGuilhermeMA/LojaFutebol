@@ -37,4 +37,19 @@ public class UsuarioDAO {
         }
         return usuarios;
     }
+
+    public Usuario usuarioCadastrado(String username, String senha) throws SQLException{
+        String sql = "SELECT * FROM Usuarios WHERE email = ? AND senha_hash = ?";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setString(1,username);
+            pstmt.setString(2, senha);
+            try ( ResultSet rs = pstmt.executeQuery()) {
+                if(rs.next()){
+                    return new Usuario(rs.getString("nome"), rs.getString("sobrenome"),
+                            rs.getString("email"), rs.getString("senha_hash"));
+                }
+            }
+        }
+        return null;
+    }
 }

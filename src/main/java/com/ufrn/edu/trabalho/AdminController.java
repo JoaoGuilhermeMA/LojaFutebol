@@ -62,4 +62,13 @@ public class AdminController {
 
         response.sendRedirect("pageCadastro.html");
     }
+
+    @RequestMapping(value = "/doExcluir", method = RequestMethod.GET)
+    public void deletarProduto(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException {
+        String idParam = request.getParameter("id");
+        Conexao conexao = new Conexao();
+        var dao = new ProdutoDAO(conexao.getConexao());
+        dao.excluirProduto(Integer.parseInt(idParam));
+        response.sendRedirect("/pageLoja");
+    }
 }

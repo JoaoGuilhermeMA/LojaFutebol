@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
@@ -18,7 +19,7 @@ public class ClienteController {
     }
 
     @RequestMapping(value = "/registrar", method = RequestMethod.POST)
-    public void cadastrarCliente(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException {
+    public void cadastrarCliente(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException {
         var nome = request.getParameter("nome");
         System.out.println(request.getParameter("nome"));
         var sobrenome = request.getParameter("sobrenome");
@@ -29,6 +30,7 @@ public class ClienteController {
         Conexao conexao = new Conexao();
         var clienteDao = new UsuarioDAO(conexao.getConexao());
         clienteDao.inserirUsuario(cliente);
+        response.sendRedirect("/");
     }
 
 }
