@@ -38,7 +38,11 @@ public class AuthController {
             session.setAttribute("logado", true);
             session.setAttribute("email", email);
             System.out.println(session);
-            request.getRequestDispatcher("/").forward(request, response); // Redireciona internamente para a página principal
+            if(usuario.getTipoUsuario() == "cliente"){
+                request.getRequestDispatcher("/").forward(request, response);
+            }else{
+                request.getRequestDispatcher("/pageLoja").forward(request, response);
+            }
         } else {
             response.sendRedirect("index.html?msg=Login Falhou");
         }
