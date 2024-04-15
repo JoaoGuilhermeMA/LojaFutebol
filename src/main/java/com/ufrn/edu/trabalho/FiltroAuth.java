@@ -21,11 +21,19 @@ public class FiltroAuth implements Filter {
         HttpServletResponse response = ((HttpServletResponse) servletResponse);
         HttpServletRequest request = ((HttpServletRequest) servletRequest);
 
+        // Verifica se a URL atual corresponde à página de registro ou de login
+        String requestURI = request.getRequestURI();
+        if (requestURI.endsWith("/registrar") || requestURI.endsWith("/logar")) {
+            // Se corresponder, permite que a solicitação continue sem aplicar o filtro
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         HttpSession session = request.getSession(false);
 
         if (session == null){
             response.sendRedirect("index.html?msg=Você precisa logar antes");
-        }else{
+        } else {
             Boolean logado = (Boolean) session.getAttribute("logado");
             if (!logado || logado == null){
                 response.sendRedirect("index.html?msg=Você precisa logar antes");

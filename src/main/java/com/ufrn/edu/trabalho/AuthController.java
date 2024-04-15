@@ -13,30 +13,33 @@ import java.sql.SQLException;
 
 @Controller
 public class AuthController {
-    @RequestMapping(value = "logar", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/logar", method = RequestMethod.GET)
+    public String exibeFormularioLogar() {
+        return "index.html";
+    }
+
+    @RequestMapping(value = "/logar", method = RequestMethod.POST)
     public void doLogar(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException {
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         Conexao con = new Conexao();
         UsuarioDAO dao = new UsuarioDAO(con.getConexao());
-        Usuario usuario = dao.usuarioCadastrado(username, senha);
+        Usuario usuario = dao.usuarioCadastrado(email, senha);
         if(usuario != null){
-            if (usuario.getEmail().equals(username) && usuario.getSenha().equals(senha)) {
-                HttpSession session = request.getSession();
-                session.setAttribute("logado", true);
-
-                response.sendRedirect("/pageUsuario");
-            }
-        }else {
+            HttpSession session = request.getSession();
+            session.setAttribute("logado", true);
+            session.setAttribute("email", email);
+            response.sendRedirect("/"); // Redireciona para a página principal
+        } else {
             response.sendRedirect("index.html?msg=Login Falhou");
         }
     }
 
-    @RequestMapping(value = "logout")
+    @RequestMapping(value = "/logout")
     public void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.invalidate();
-
-        response.sendRedirect("/");
+        session.invalidate(); // Invalida a sessão do usuário
+        response.sendRedirect("/"); // Redireciona para a página principal
     }
 }
