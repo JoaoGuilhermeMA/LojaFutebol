@@ -38,8 +38,8 @@ public class AuthController {
             session.setAttribute("logado", true);
             session.setAttribute("email", email);
             System.out.println(session);
-            if(usuario.getTipoUsuario() == "cliente"){
-                request.getRequestDispatcher("/").forward(request, response);
+            if(usuario.getTipoUsuario().equals("cliente")){
+                request.getRequestDispatcher("/lojaFutebol").forward(request, response);
             }else{
                 request.getRequestDispatcher("/pageLoja").forward(request, response);
             }
