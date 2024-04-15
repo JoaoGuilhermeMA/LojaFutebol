@@ -79,7 +79,21 @@ public class ClienteController {
     }
 
     @RequestMapping(value = "/seuCarrinho", method = RequestMethod.GET)
-    public String carrinho(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException{
-        return "tela do carrinho";
+    public void carrinho(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException{
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();
+
+        BufferedReader htmlReader = new BufferedReader(new FileReader("src/main/resources/static/carrinho.html"));
+        BufferedWriter htmlWriter = new BufferedWriter(writer);
+
+        String line;
+        while ((line = htmlReader.readLine()) != null) {
+            htmlWriter.write(line + "\n");
+        }
+
+        htmlWriter.write("<br <br>>Seu carrinho");
+
+        htmlReader.close();
+        htmlWriter.close();
     }
 }

@@ -51,7 +51,7 @@ public class AuthController {
     @RequestMapping(value = "/logout")
     public void doLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.invalidate(); // Invalida a sessão do usuário
-        response.sendRedirect("/"); // Redireciona para a página principal
+        session.invalidate();
+        response.sendRedirect("/logar");
     }
 }
