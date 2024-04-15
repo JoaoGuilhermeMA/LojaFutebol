@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import java.io.IOException;
 
@@ -21,21 +23,22 @@ public class FiltroAuth implements Filter {
         HttpServletResponse response = ((HttpServletResponse) servletResponse);
         HttpServletRequest request = ((HttpServletRequest) servletRequest);
 
-        // Verifica se a URL atual corresponde à página de registro ou de login
         String requestURI = request.getRequestURI();
         if (requestURI.endsWith("/registrar") || requestURI.endsWith("/logar")) {
-            // Se corresponder, permite que a solicitação continue sem aplicar o filtro
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
         HttpSession session = request.getSession(false);
+        System.out.println(session);
 
         if (session == null){
+            System.out.println("estou aqui 1");
             response.sendRedirect("index.html?msg=Você precisa logar antes");
         } else {
             Boolean logado = (Boolean) session.getAttribute("logado");
-            if (!logado || logado == null){
+            if (logado == null){
+                System.out.println("estou aqui 2");
                 response.sendRedirect("index.html?msg=Você precisa logar antes");
             }
         }

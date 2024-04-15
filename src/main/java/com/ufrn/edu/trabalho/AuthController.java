@@ -1,5 +1,6 @@
 package com.ufrn.edu.trabalho;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -20,17 +21,24 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/logar", method = RequestMethod.POST)
-    public void doLogar(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException {
-        String email = request.getParameter("email");
+    public void doLogar(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException, ServletException {
+        String email = request.getParameter("username");
         String senha = request.getParameter("senha");
+        System.out.println(email);
+        System.out.println(senha);
         Conexao con = new Conexao();
         UsuarioDAO dao = new UsuarioDAO(con.getConexao());
         Usuario usuario = dao.usuarioCadastrado(email, senha);
+        System.out.println(usuario.getEmail());
+        System.out.println(usuario.getSenha());
         if(usuario != null){
+            System.out.println(usuario.getEmail());
+            System.out.println(usuario.getSenha());
             HttpSession session = request.getSession();
             session.setAttribute("logado", true);
             session.setAttribute("email", email);
-            response.sendRedirect("/"); // Redireciona para a página principal
+            System.out.println(session);
+            request.getRequestDispatcher("/").forward(request, response); // Redireciona internamente para a página principal
         } else {
             response.sendRedirect("index.html?msg=Login Falhou");
         }
