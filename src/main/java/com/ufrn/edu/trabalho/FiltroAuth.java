@@ -31,23 +31,15 @@ public class FiltroAuth implements Filter {
         }
 
         HttpSession session = request.getSession(false);
-        System.out.println(session);
 
         if (session == null){
-            System.out.println("estou aqui 1");
-            response.sendRedirect("index.html?msg=Você precisa logar antes");
+            response.sendRedirect("/logar");
+            return;
         } else {
             Boolean logado = (Boolean) session.getAttribute("logado");
             if (logado == null){
                 session.invalidate();
-                System.out.println("estou aqui 2");
                 response.sendRedirect("index.html?msg=Você precisa logar antes");
-            }else{
-                if(session.getAttribute("role") == "cliente"){
-
-                }else{
-
-                }
             }
         }
 

@@ -1,5 +1,6 @@
 package com.ufrn.edu.trabalho;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +38,16 @@ public class ClienteController {
 
     @RequestMapping(value = "/lojaFutebol", method =  RequestMethod.GET)
     public void mostraProdutos(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException  {
+        HttpSession session = request.getSession(false);
+        if (session != null){
+            String role = (String) session.getAttribute("role");
+            if (!role.equals("cliente")){
+                response.sendRedirect("index.html?msg=voce nao pode acessar a pagina");
+            }
+        }else {
+            response.sendRedirect("index.html?msg=voce nao pode acessar a pagina");
+        }
+
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
 
@@ -56,14 +67,19 @@ public class ClienteController {
             htmlWriter.write("<ul>");
             for (Produto produto : produtos) {
                 htmlWriter.write("<li>"+ produto.getNome_produto() + "<br>" + produto.getTipo_produto()+"<br>" + produto.getPreco()+"<br>" + produto.getDescricao()+"<br>");
-                htmlWriter.write("<a href='/adicionaCarrinho?id='"+produto.getId_produto()+"><button>Adicionar ao Carrinho</button></a>");
+                htmlWriter.write("<form action='/adicionaCarrinho' method='post'>");
+                htmlWriter.write("<input type='hidden' name='id' value='" + produto.getId_produto() + "'>");
+                htmlWriter.write("<button type='submit'>Adicionar ao Carrinho</button>");
+                htmlWriter.write("</form>");
                 htmlWriter.write("</li>");
                 htmlWriter.write("<br>");
             }
             htmlWriter.write("</ul>");
         }
 
+
         htmlWriter.write("<a href='/seuCarrinho'><button>Ver carrinho</button></a>");
+        htmlWriter.write("<br><br><a href='/logout'>Logout</a>");
         htmlReader.close();
         htmlWriter.close();
     }
@@ -72,9 +88,35 @@ public class ClienteController {
     public void itemNoCarrinho(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException{
         String idProd = request.getParameter("id"); // id do elemento que foi clicado para adicionar ao carrinho
 
-        // Criar busca no banco pelo id e adicionar ao array
+        Cookie[] cookies = request.getCookies();
+        Cookie carrinhoCookie = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("carrinho")) {
+                    carrinhoCookie = cookie;
+                    break;
+                }
+            }
+        }
 
-        //implementar a lógica do array com os itens do carrinho
+        // Se não houver um cookie existente para o carrinho, criar um novo cookie
+        if (carrinhoCookie == null) {
+            carrinhoCookie = new Cookie("carrinho", idProd);
+        } else {
+            // Se já houver um cookie para o carrinho, adicionar o ID do produto ao valor do cookie
+            String valorCookie = carrinhoCookie.getValue();
+            valorCookie += "-" + idProd;
+            carrinhoCookie.setValue(valorCookie);
+        }
+
+
+        // Definir a duração do cookie (opcional)
+        carrinhoCookie.setMaxAge(48 * 60 * 60); // Define a duração do cookie para 24 horas (em segundos)
+        // Adicionar o cookie à resposta
+        response.addCookie(carrinhoCookie);
+
+
+
         response.sendRedirect("/lojaFutebol");
     }
 
