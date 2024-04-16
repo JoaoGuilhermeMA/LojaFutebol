@@ -17,6 +17,12 @@ public class Usuario {
         this.tipoUsuario = "cliente";
     }
 
+    public Usuario(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
+        this.tipoUsuario = "administrador";
+    }
+
     public int getIdUsuario() {
         return idUsuario;
     }

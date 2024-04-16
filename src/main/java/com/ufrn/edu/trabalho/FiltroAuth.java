@@ -24,7 +24,8 @@ public class FiltroAuth implements Filter {
         HttpServletRequest request = ((HttpServletRequest) servletRequest);
 
         String requestURI = request.getRequestURI();
-        if (requestURI.endsWith("/registrar") || requestURI.endsWith("/logar")) {
+        if (requestURI.endsWith("/registrar") || requestURI.endsWith("/logar")|| requestURI.endsWith("/")) {
+
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -38,10 +39,18 @@ public class FiltroAuth implements Filter {
         } else {
             Boolean logado = (Boolean) session.getAttribute("logado");
             if (logado == null){
+                session.invalidate();
                 System.out.println("estou aqui 2");
                 response.sendRedirect("index.html?msg=Você precisa logar antes");
+            }else{
+                if(session.getAttribute("role") == "cliente"){
+
+                }else{
+
+                }
             }
         }
+
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

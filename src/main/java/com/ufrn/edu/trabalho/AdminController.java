@@ -2,6 +2,7 @@ package com.ufrn.edu.trabalho;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,15 @@ public class AdminController {
 
     @RequestMapping(value = "/pageLoja", method = RequestMethod.GET)
     public void pageLoja(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException, URISyntaxException {
+        HttpSession session = request.getSession(false);
+        if (session != null){
+            String role = (String) session.getAttribute("role");
+            if (!role.equals("administrador")){
+                response.sendRedirect("index.html?msg=voce nao pode acessar a pagina");
+            }
+        }else {
+            response.sendRedirect("index.html?msg=voce nao pode acessar a pagina");
+        }
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
 
@@ -43,12 +53,18 @@ public class AdminController {
         }
 
         htmlWriter.write("<a href='/pageCadastro.html'><button>Novo produto</button></a>");
+        htmlWriter.write("<br><br><a href='/logout'>Logout</a>");
         htmlReader.close();
         htmlWriter.close();
     }
 
     @RequestMapping(value = "/pageCadastro", method = RequestMethod.POST)
     public void cadastrarProd(HttpServletRequest request, HttpServletResponse response) throws SQLException, URISyntaxException, IOException {
+        HttpSession session = request.getSession(false);
+        String role = (String) session.getAttribute("role");
+        if (!role.equals("administrador")){
+            response.sendRedirect("index.html?msg=voce nao pode acessar a pagina");
+        }
         String nomeprod = request.getParameter("nome");
         String descricaoprod = request.getParameter("descricao");
         String tipoprod = request.getParameter("tipo");
