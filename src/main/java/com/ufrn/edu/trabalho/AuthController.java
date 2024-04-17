@@ -32,6 +32,7 @@ public class AuthController {
             HttpSession session = request.getSession();
             session.setAttribute("logado", true);
             session.setAttribute("email", email);
+            session.setAttribute("idUser", usuario.getIdUsuario());
             session.setAttribute("role", usuario.getTipoUsuario());
             if(usuario.getEmail().equals("admin@gmail.com")){
                 response.sendRedirect("/pageLoja");

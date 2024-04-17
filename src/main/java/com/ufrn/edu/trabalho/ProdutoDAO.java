@@ -64,4 +64,31 @@ public class ProdutoDAO {
             pstmt.executeUpdate();
         }
     }
+
+    public Produto buscarProdutoId(Integer id) throws SQLException {
+        String sql = "SELECT * FROM Produtos WHERE id_produto = ?";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Produto produto = new Produto( rs.getString("nome_produto"), rs.getString("descricao"),
+                            rs.getFloat("preco"), rs.getInt("quantidade_estoque"), rs.getString("tipo_produto"));
+                    produto.setId_produto(rs.getInt("id_produto"));
+                    return produto;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void atualizaQuantidade(Produto produto) throws SQLException {
+        String sql = "UPDATE Produtos SET quantidade_estoque = ? WHERE id_produto = ?";
+        try (PreparedStatement pstmt = conexao.prepareStatement(sql)) {
+            pstmt.setInt(1, produto.getQuantidade()); // Define a nova quantidade em estoque
+            pstmt.setInt(2, produto.getId_produto()); // Define o ID do produto a ser atualizado
+            pstmt.executeUpdate(); // Executa a atualização no banco de dados
+        }
+    }
+
+
 }

@@ -48,11 +48,14 @@ public class UsuarioDAO {
                     if (rs.getString("email").equals("admin@gmail.com")){
                         return new Usuario(rs.getString("email"), rs.getString("senha_hash"));
                     }
-                    return new Usuario(rs.getString("nome"), rs.getString("sobrenome"),
+                    Usuario user = new Usuario(rs.getString("nome"), rs.getString("sobrenome"),
                             rs.getString("email"), rs.getString("senha_hash"));
+                    user.setIdUsuario(rs.getInt("id_usuario"));
+                    return user;
                 }
             }
         }
         return null;
     }
+
 }

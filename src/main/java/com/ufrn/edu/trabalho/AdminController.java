@@ -45,9 +45,9 @@ public class AdminController {
         if (produtos != null) {
             htmlWriter.write("<ul>");
             for (Produto produto : produtos) {
-                htmlWriter.write("<li>" + produto.getId_produto() + "<br>" + produto.getNome_produto() + "<br>" + produto.getTipo_produto()+"<br>" + produto.getPreco()+"<br>" + produto.getDescricao()+"<br>");
+                htmlWriter.write("<li>" + produto.getId_produto() + "<br>" + produto.getNome_produto() + "<br>Quantidade: " + produto.getQuantidade() +"<br>"+ produto.getTipo_produto()+"<br>" + produto.getPreco()+"<br>" + produto.getDescricao()+"<br>");
                 htmlWriter.write("<a href='/doExcluir?id=" + produto.getId_produto() + "'><button>Excluir</button></a>");
-                htmlWriter.write("</li>");
+                htmlWriter.write("</li><br><br>");
             }
             htmlWriter.write("</ul>");
         }
